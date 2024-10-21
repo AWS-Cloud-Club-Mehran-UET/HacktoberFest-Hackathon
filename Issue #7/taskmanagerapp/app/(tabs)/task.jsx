@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList, Alert, Platform } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // TaskQueue (FIFO) for pending tasks
 class TaskQueue {
@@ -55,16 +56,14 @@ const TodoApp = () => {
   const [taskQueueState, setTaskQueueState] = useState([]);
   const [completedTasksState, setCompletedTasksState] = useState([]);
   const [timer, setTimer] = useState(new Date());
-  const [editId, setEditId] = useState(null);
   const [showPicker, setShowPicker] = useState(false);
+  const [isEditing, setIsEditing] = useState(null); // State to track editing
 
   const taskQueue = new TaskQueue();
   const completedTasksStack = new CompletedTasksStack();
 
-  // Fetch all tasks from AsyncStorage when the component mounts
   useEffect(() => {
     fetchTasks();
-  
     Notifications.requestPermissionsAsync();
   }, []);
 
@@ -92,22 +91,26 @@ const TodoApp = () => {
     });
   };
 
-  const addOrEditTodo = async () => {
+  const addTodo = async () => {
     if (text === '' || !timer) return;
 
     const task = { id: Date.now(), task: text, timer: Math.floor((timer.getTime() - new Date().getTime()) / 1000) };
 
-    if (editId) {
-      // Logic for editing tasks (can be added later)
-      setEditId(null);
+    // Add or update task in queue
+    let updatedQueue;
+    if (isEditing !== null) {
+      updatedQueue = taskQueueState.map(item => (item.id === isEditing ? { ...item, task: text } : item));
+      setIsEditing(null); // Reset editing state
     } else {
-      taskQueue.enqueue(task);
-      setTaskQueueState([...taskQueue.getQueue()]);
+      updatedQueue = [...taskQueueState, task];
       scheduleNotification(task.task, task.timer);
     }
 
+    setTaskQueueState(updatedQueue);
+    taskQueue.enqueue(task);
+
     try {
-      await AsyncStorage.setItem('taskQueue', JSON.stringify(taskQueue.getQueue()));
+      await AsyncStorage.setItem('taskQueue', JSON.stringify(updatedQueue));
       setText('');
       setTimer(new Date());
     } catch (error) {
@@ -116,14 +119,19 @@ const TodoApp = () => {
   };
 
   const completeTask = async (id) => {
-    const task = taskQueue.dequeue();
-    completedTasksStack.push(task);
+    const updatedQueue = taskQueueState.filter(task => task.id !== id);
+    const completedTask = taskQueueState.find(task => task.id === id);
 
-    setTaskQueueState([...taskQueue.getQueue()]);
-    setCompletedTasksState([...completedTasksStack.getStack()]);
+    if (completedTask) {
+      const updatedCompletedTasks = [...completedTasksState, completedTask];
+      setCompletedTasksState(updatedCompletedTasks);
+      completedTasksStack.push(completedTask);
+    }
+
+    setTaskQueueState(updatedQueue);
 
     try {
-      await AsyncStorage.setItem('taskQueue', JSON.stringify(taskQueue.getQueue()));
+      await AsyncStorage.setItem('taskQueue', JSON.stringify(updatedQueue));
       await AsyncStorage.setItem('completedTasks', JSON.stringify(completedTasksStack.getStack()));
     } catch (error) {
       console.error('Failed to update AsyncStorage:', error);
@@ -131,13 +139,18 @@ const TodoApp = () => {
   };
 
   const deleteTask = async (id) => {
-    const updatedQueue = taskQueueState.filter(task => task && task.id !== id);
+    const updatedQueue = taskQueueState.filter(task => task.id !== id);
     setTaskQueueState(updatedQueue);
     try {
       await AsyncStorage.setItem('taskQueue', JSON.stringify(updatedQueue));
     } catch (error) {
       console.error('Failed to delete task from AsyncStorage:', error);
     }
+  };
+
+  const editTask = (task) => {
+    setText(task.task); // Set the task text to the input field for editing
+    setIsEditing(task.id); // Mark the task as being edited
   };
 
   const showTimePicker = () => {
@@ -152,21 +165,28 @@ const TodoApp = () => {
   };
 
   const renderTodo = ({ item }) => {
-    if (!item) return null; // Ensure the task item exists
+    if (!item) return null;
 
     return (
       <View style={styles.todoItem}>
         <Text>{item.task} (Timer: {item.timer}s)</Text>
         <View style={styles.buttons}>
-          <Button title="Complete" onPress={() => completeTask(item.id)} />
-          <Button title="Delete" onPress={() => deleteTask(item.id)} />
+          <TouchableOpacity onPress={() => completeTask(item.id)}>
+            <Icon name="checkmark-circle-outline" size={25} color="green" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => editTask(item)}>
+            <Icon name="create-outline" size={25} color="blue" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => deleteTask(item.id)}>
+            <Icon name="trash-outline" size={25} color="red" />
+          </TouchableOpacity>
         </View>
       </View>
     );
   };
 
   const renderCompletedTask = ({ item }) => {
-    if (!item) return null; // Ensure the completed task item exists
+    if (!item) return null;
 
     return (
       <View style={styles.todoItem}>
@@ -194,18 +214,18 @@ const TodoApp = () => {
           is24Hour={true}
         />
       )}
-      <Button title={editId ? "Edit Task" : "Add Task"} onPress={addOrEditTodo} />
+      <Button title={isEditing ? "Update Task" : "Add Task"} onPress={addTodo} />
       <Text style={styles.subHeading}>Pending Tasks:</Text>
       <FlatList
         data={taskQueueState}
         renderItem={renderTodo}
-        keyExtractor={(item) => (item?.id ? item.id.toString() : Math.random().toString())} // Ensure key is unique
+        keyExtractor={(item) => item.id.toString()}
       />
       <Text style={styles.subHeading}>Completed Tasks:</Text>
       <FlatList
         data={completedTasksState}
         renderItem={renderCompletedTask}
-        keyExtractor={(item) => (item?.id ? item.id.toString() : Math.random().toString())} // Ensure key is unique
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
