@@ -133,3 +133,9 @@ The app utilizes **Material UI Icons** to enhance the visual appeal of the user 
 ## APK File
 
 The APK file for the Homework Management App can be found in the "issue 7" folder. You can download and install it on your Android device for direct access to the application.
+
+
+## How to Install
+`1)cd taskmanagerapp`
+`2)npm install`
+`3)npm start`
