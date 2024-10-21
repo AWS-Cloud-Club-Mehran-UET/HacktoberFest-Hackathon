@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emp Profile Management page</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="./EmpManagement.js" defer></script>
+    <script src="https://kit.fontawesome.com/24f84cfde2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+   
+    <header class="bg-purple-200 p-2">
+        <div>
+            <button id="add-emp" class="bg-white rounded-sm font-bold px-2 ">Add Employee</button>
+            <button id="view-list" class="bg-white rounded-sm font-bold px-2 ">View Employee</button>
+        </div>
+    </header>
+
+<section id="" class="max-w-xl  h-screen flex items-center justify-center m-auto">
+<div id="view-Add-Emp" class="hidden">
+<form id="add-profile-form" class="bg-slate-300 p-2 gap-3 flex flex-col w-full">
+<label for="emp-id">Employee No: <input type="number" id="emp-id" class="self-end"></label>
+<label for="emp-name">Employee Name: <input type="text" id="emp-name"></label>
+<label for="emp-desig">Employee Designation: <input type="text" id="emp-desig"></label>
+<label for="emp-depart">Employee Department: <input type="text" id="emp-depart"></label>
+<label for="emp-salary">Employee Salary: <input type="text" id="emp-salary"></label>
+<label for="emp-start-date">Employee start date: <input type="date" id="emp-start-date"></label>
+<label for="emp-p-email">Personal email: <input type="email" id="emp-p-email"></label>
+<label for="phone-no">Phone Number: <input type="tel" id="phone-no"></label>
+<label for="address">Address: <input type="text" id="address"></label>
+<button type="submit" id="save-profile">Save</button>
+
+</form>
+
+</div>
+<div id="View-Emp-list" class="flex gap-12">
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

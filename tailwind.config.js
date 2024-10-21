@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: ["./HRManagement-9/*.{js,html}"],
   theme: {
     extend: {},
   },
