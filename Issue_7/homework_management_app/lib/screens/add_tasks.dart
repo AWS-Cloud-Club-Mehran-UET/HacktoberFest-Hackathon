@@ -12,6 +12,7 @@ class _AddTasksState extends State<AddTasks> {
   final title = TextEditingController();
   final description = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  TaskQueue taskQueue = TaskQueue();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +28,6 @@ class _AddTasksState extends State<AddTasks> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextFormField(
-                controller: title,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Fill it";
@@ -41,7 +41,6 @@ class _AddTasksState extends State<AddTasks> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: TextFormField(
-                controller: description,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Fill it";
@@ -60,11 +59,12 @@ class _AddTasksState extends State<AddTasks> {
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     setState(() {
-                      TaskQueue.addQueueItem(title.text , description.text);
+                      taskQueue.addQueueItem(
+                          title.toString(), description.toString());
                     });
 
                     if (context.mounted) {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context);
                     }
                   }
                 },

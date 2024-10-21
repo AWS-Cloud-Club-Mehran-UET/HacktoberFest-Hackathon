@@ -1,10 +1,10 @@
 class TaskQueue {
-  static List<Map<String, String>> taskQueue = [];
-  static void addQueueItem(String title, String description) {
+  List<Map<String, String>> taskQueue = [];
+  void addQueueItem(String title, String description) {
     taskQueue.add({'title': title, 'description': description});
   }
 
-  static void removeItem(index) {
-    taskQueue.removeAt(index);
+  void removeItem() {
+    taskQueue.removeAt(0);
   }
 }

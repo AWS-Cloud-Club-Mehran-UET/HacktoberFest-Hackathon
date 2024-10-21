@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:homework_management_app/Data_Structures/TaskQueue.dart';
-import 'package:homework_management_app/Data_Structures/TaskStack.dart';
 import 'package:homework_management_app/screens/add_tasks.dart';
 
 class PendingTasks extends StatefulWidget {
@@ -11,51 +10,38 @@ class PendingTasks extends StatefulWidget {
 }
 
 class _PendingTasksState extends State<PendingTasks> {
+  TaskQueue taskQueue = TaskQueue();
+
   @override
   Widget build(BuildContext context) {
-    print(TaskQueue.taskQueue);
+    print(taskQueue.taskQueue);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(right: 2.0, left: 2),
         child: ListView.builder(
-            itemCount: TaskQueue.taskQueue.length,
+            itemCount: taskQueue.taskQueue.length,
             itemBuilder: (context, index) {
               return Card(
                 color: Colors.grey,
                 child: ListTile(
-                  title: Text(TaskQueue.taskQueue[index]['title']!),
-                  subtitle: Text(TaskQueue.taskQueue[index]['description']!),
-                  trailing: Row(
+                  title: Text(taskQueue.taskQueue[index]['title']!),
+                  subtitle: Text(taskQueue.taskQueue[index]['description']!),
+                  trailing: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      InkWell(
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.green,
-                          size: 30,
-                        ),
-                        onTap: (){
-                          setState(() {
-                            TaskStack.push(TaskQueue.taskQueue[index]['title']!, TaskQueue.taskQueue[index]['description']!);
-                            TaskQueue.removeItem(index);
-                          });
-                        },
+                      Icon(
+                        Icons.check,
+                        color: Colors.green,
+                        size: 30,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
-                      InkWell(
-                        child: const Icon(
-                          Icons.delete,
-                          size: 30,
-                          color: Colors.red,
-                        ),
-                        onTap: () {
-                          setState(() {
-                            TaskQueue.removeItem(index);
-                          });
-                        },
-                      )
+                      Icon(
+                        Icons.delete,
+                        size: 30,
+                        color: Colors.red,
+                      ),
                     ],
                   ),
                 ),
@@ -67,10 +53,7 @@ class _PendingTasksState extends State<PendingTasks> {
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const AddTasks()));
-          setState(() {
-          });
         },
-
         child: const Icon(
           Icons.add,
           color: Colors.black,
