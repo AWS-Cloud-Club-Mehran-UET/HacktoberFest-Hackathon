@@ -1,12 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/contexts/AuthContext";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CreateEventPage() {
   const [title, setTitle] = useState("");
@@ -14,121 +21,96 @@ export default function CreateEventPage() {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [eventUrl, setEventUrl] = useState("");
   const router = useRouter();
   const supabase = createClientComponentClient();
-  const { user, isAdmin, getCurrentUser } = useAuth();
-
-  useEffect(() => {
-    async function loadUser() {
-      await getCurrentUser();
-      setIsLoading(false);
-    }
-    loadUser();
-  }, [getCurrentUser]);
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !isAdmin) {
-      console.error("User not authenticated or not an admin");
-      return;
-    }
+    if (!user) return;
 
-    const { data, error } = await supabase.from("events").insert([
-      {
+    const { data, error } = await supabase
+      .from("events")
+      .insert({
         title,
         description,
         date,
         location,
         capacity: parseInt(capacity),
-        creator_id: user.id,
-      },
-    ]);
+        is_private: isPrivate,
+        created_by: user.id,
+      })
+      .select();
 
     if (error) {
       console.error("Error creating event:", error);
     } else {
-      router.push("/events");
+      const eventId = data[0].id;
+      const url = `${window.location.origin}/events/${eventId}`;
+      setEventUrl(url);
+      if (!isPrivate) {
+        router.push(`/events/${eventId}`);
+      }
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user || !isAdmin) {
-    return <div>You do not have permission to create events.</div>;
-  }
-
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Create New Event</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium mb-1">
-            Event Title
-          </label>
-          <Input
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto mt-8">
+      <Input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Event Title"
+        required
+      />
+      <Textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Event Description"
+        required
+      />
+      <Input
+        type="datetime-local"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+      <Input
+        type="text"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        placeholder="Event Location"
+        required
+      />
+      <Input
+        type="number"
+        value={capacity}
+        onChange={(e) => setCapacity(e.target.value)}
+        placeholder="Event Capacity"
+        required
+      />
+      <Select onValueChange={(value) => setIsPrivate(value === "private")}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select event type" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="public">Public</SelectItem>
+          <SelectItem value="private">Private</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button type="submit">Create Event</Button>
+      {eventUrl && isPrivate && (
+        <div className="mt-4">
+          <p>Private Event URL:</p>
+          <Input type="text" value={eventUrl} readOnly />
+          <p className="text-sm text-gray-500 mt-2">
+            Share this URL with the people you want to invite to your private
+            event.
+          </p>
         </div>
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium mb-1"
-          >
-            Description
-          </label>
-          <Textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium mb-1">
-            Date
-          </label>
-          <Input
-            id="date"
-            type="datetime-local"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="location" className="block text-sm font-medium mb-1">
-            Location
-          </label>
-          <Input
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="capacity" className="block text-sm font-medium mb-1">
-            Capacity
-          </label>
-          <Input
-            id="capacity"
-            type="number"
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-            required
-          />
-        </div>
-        <Button type="submit" className="w-full">
-          Create Event
-        </Button>
-      </form>
-    </div>
+      )}
+    </form>
   );
 }

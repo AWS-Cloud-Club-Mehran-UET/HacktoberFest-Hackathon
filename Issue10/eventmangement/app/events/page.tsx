@@ -1,60 +1,58 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
+"use client";
 
-interface EventCardProps {
+import { useEffect, useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+interface Event {
   id: string;
   title: string;
   description: string;
   date: string;
   location: string;
+  capacity: number;
+  is_private: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
-  id,
-  title,
-  description,
-  date,
-  location,
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle>{title}</CardTitle>
-      <CardDescription>{new Date(date).toLocaleString()}</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <p>{description}</p>
-      <p className="mt-2">Location: {location}</p>
-    </CardContent>
-    <CardFooter>
-      <Link href={`/events/${id}`}>
-        <Button>View Details</Button>
-      </Link>
-    </CardFooter>
-  </Card>
-);
+export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>([]);
+  const supabase = createClientComponentClient();
 
-export default async function EventsPage() {
-  const supabase = createServerComponentClient({ cookies });
-  const { data: events } = await supabase.from("events").select("*");
+  useEffect(() => {
+    async function fetchEvents() {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("is_private", false)
+        .order("date", { ascending: true });
+
+      if (error) {
+        console.error("Error fetching events:", error);
+      } else {
+        setEvents(data);
+      }
+    }
+
+    fetchEvents();
+  }, []);
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Upcoming Events</h1>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {events?.map((event) => (
-          <EventCard key={event.id} {...event} />
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Upcoming Events</h1>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {events.map((event) => (
+          <Link href={`/events/${event.id}`} key={event.id}>
+            <Card>
+              <CardHeader>
+                <CardTitle>{event.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{new Date(event.date).toLocaleString()}</p>
+                <p>{event.location}</p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </div>
