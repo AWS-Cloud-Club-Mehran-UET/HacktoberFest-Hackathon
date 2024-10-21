@@ -1,6 +1,8 @@
-import {configureStore} from '@reduxjs/toolkit'
-import homeworkReducer from '../features/HomeworkSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import homeworkReducer from "./homeworkSlice";
 
-export const Store = configureStore({
+const store = configureStore({
     reducer: homeworkReducer
-})
+});
+
+export default store;

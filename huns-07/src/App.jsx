@@ -1,15 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import { Outlet } from 'react-router-dom'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
- <div>Hello World</div>
-    </>
+    <div className='w-full min-h-full'>
+      <Outlet />
+    </div>
   )
 }
 
