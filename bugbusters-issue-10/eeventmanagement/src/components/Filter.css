@@ -1,0 +1,14 @@
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Add space between the elements */
+    margin-left: 2rem; /* Add margin to the left to align beside the calendar */
+  }
+  
+  .filter-dropdown {
+    margin-right: 1rem; /* Add margin to the right for spacing */
+  }
+  
+  .filter-reset {
+    margin-left: 1rem; /* Add margin to the left for spacing */
+  }

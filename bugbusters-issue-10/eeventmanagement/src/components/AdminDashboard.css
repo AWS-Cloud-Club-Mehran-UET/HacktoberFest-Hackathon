@@ -1,0 +1,75 @@
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.events-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.event-card {
+  flex: 1 1 calc(50% - 1rem); /* Two events side by side */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.event-card p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.edit-button,
+.cancel-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-right: 0.5rem;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #d9534f;
+  color: #fff;
+}
+
+.cancel-button:hover {
+  background-color: #c9302c;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .event-card {
+    flex: 1 1 100%; /* Single column layout on smaller screens */
+  }
+}
