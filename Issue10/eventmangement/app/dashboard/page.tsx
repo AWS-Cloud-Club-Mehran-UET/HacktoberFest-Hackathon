@@ -62,7 +62,12 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <Link href="/events/create">
+          <Button>Create Event</Button>
+        </Link>
+      </div>
       <div className="space-y-4">
         {events.map((event) => (
           <Card key={event.id}>

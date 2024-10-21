@@ -14,6 +14,7 @@ interface Post {
   content: string;
   user_id: string;
   created_at: string;
+  user_name: string;
 }
 
 interface Comment {
@@ -21,6 +22,7 @@ interface Comment {
   content: string;
   user_id: string;
   created_at: string;
+  user_name: string;
 }
 
 export default function DiscussionPage() {
@@ -31,32 +33,37 @@ export default function DiscussionPage() {
 
   const params = useParams();
   const supabase = createClientComponentClient();
-  const { user } = useAuth();
+  const { user, userName } = useAuth();
 
   useEffect(() => {
     async function fetchPostAndComments() {
       const { data: postData, error: postError } = await supabase
         .from("community_posts")
-        .select("*")
+        .select("*, profiles(name)")
         .eq("id", params.id)
         .single();
 
       if (postError) {
         console.error("Error fetching post:", postError);
       } else {
-        setPost(postData);
+        setPost({ ...postData, user_name: postData.profiles.name });
       }
 
       const { data: commentsData, error: commentsError } = await supabase
         .from("post_comments")
-        .select("*")
+        .select("*, profiles(name)")
         .eq("post_id", params.id)
         .order("created_at", { ascending: true });
 
       if (commentsError) {
         console.error("Error fetching comments:", commentsError);
       } else {
-        setComments(commentsData);
+        setComments(
+          commentsData.map((comment) => ({
+            ...comment,
+            user_name: comment.profiles.name,
+          }))
+        );
       }
 
       setIsLoading(false);
@@ -87,14 +94,19 @@ export default function DiscussionPage() {
       // Refresh comments
       const { data: commentsData, error: commentsError } = await supabase
         .from("post_comments")
-        .select("*")
+        .select("*, profiles(name)")
         .eq("post_id", params.id)
         .order("created_at", { ascending: true });
 
       if (commentsError) {
         console.error("Error fetching comments:", commentsError);
       } else {
-        setComments(commentsData);
+        setComments(
+          commentsData.map((comment) => ({
+            ...comment,
+            user_name: comment.profiles.name,
+          }))
+        );
       }
     }
   };
@@ -130,13 +142,13 @@ export default function DiscussionPage() {
     <div className="max-w-3xl mx-auto">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>{post.title}</CardTitle>
+          <CardTitle>{post?.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>{post.content}</p>
+          <p>{post?.content}</p>
           <p className="text-sm text-gray-500 mt-2">
-            Posted by: {post.user_id} on{" "}
-            {new Date(post.created_at).toLocaleString()}
+            Posted by: {post?.user_name} on{" "}
+            {post?.created_at && new Date(post.created_at).toLocaleString()}
           </p>
         </CardContent>
       </Card>
@@ -148,7 +160,7 @@ export default function DiscussionPage() {
             <CardContent className="py-4">
               <p>{comment.content}</p>
               <p className="text-sm text-gray-500 mt-2">
-                Posted by: {comment.user_id} on{" "}
+                Posted by: {comment.user_name} on{" "}
                 {new Date(comment.created_at).toLocaleString()}
               </p>
               {user &&

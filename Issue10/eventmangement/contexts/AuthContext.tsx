@@ -6,6 +6,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 type AuthContextType = {
   user: User | null;
   isAdmin: boolean;
+  userName: string | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -60,6 +62,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(user);
     if (user) {
       await checkAdminStatus(user.id);
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", user.id)
+        .single();
+      if (data) {
+        setUserName(data.name);
+      }
     }
     return user;
   };
@@ -106,11 +116,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error;
     setUser(null);
     setIsAdmin(false);
+    setUserName(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, isAdmin, signIn, signUp, signOut, getCurrentUser }}
+      value={{
+        user,
+        isAdmin,
+        userName,
+        signIn,
+        signUp,
+        signOut,
+        getCurrentUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

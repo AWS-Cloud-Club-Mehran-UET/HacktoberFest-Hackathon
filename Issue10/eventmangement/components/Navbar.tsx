@@ -3,9 +3,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { User } from "lucide-react";
 
 const Navbar = () => {
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, isAdmin, userName, signOut } = useAuth();
 
   return (
     <nav className="bg-background border-b">
@@ -24,20 +33,33 @@ const Navbar = () => {
             <Button variant="ghost">Chat</Button>
           </Link>
           {user ? (
-            <>
-              <span>{user.email}</span>
-              {isAdmin && (
-                <>
-                  <Link href="/events/create">
-                    <Button variant="outline">Create Event</Button>
-                  </Link>
-                  <Link href="/dashboard">
-                    <Button variant="ghost">Dashboard</Button>
-                  </Link>
-                </>
-              )}
-              <Button onClick={signOut}>Logout</Button>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <User className="w-4 h-4" />
+                  <span>{userName || user.email}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/my-events">My Events</Link>
+                </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem>
+                  <ModeToggle />
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Link href="/login">
@@ -48,7 +70,6 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          <ModeToggle />
         </div>
       </div>
     </nav>

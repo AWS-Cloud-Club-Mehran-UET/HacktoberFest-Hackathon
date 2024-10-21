@@ -1,17 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Event {
   id: string;
@@ -59,8 +53,12 @@ function CountdownTimer({ targetDate }: { targetDate: Date }) {
 
 export default function EventDetailPage() {
   const [event, setEvent] = useState<Event | null>(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
+  const router = useRouter();
   const supabase = createClientComponentClient();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchEvent() {
@@ -75,26 +73,59 @@ export default function EventDetailPage() {
       } else {
         setEvent(data);
       }
+
+      if (user) {
+        const { data: registrationData, error: registrationError } =
+          await supabase
+            .from("event_registrations")
+            .select("*")
+            .eq("event_id", params.id)
+            .eq("user_id", user.id)
+            .single();
+
+        if (registrationError && registrationError.code !== "PGRST116") {
+          console.error("Error checking registration:", registrationError);
+        } else {
+          setIsRegistered(!!registrationData);
+        }
+      }
+
+      setIsLoading(false);
     }
 
     fetchEvent();
-  }, [params.id, supabase]);
+  }, [params.id, supabase, user]);
 
-  if (!event) {
-    return <div>Loading...</div>;
-  }
+  const handleRegister = async () => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    const { error } = await supabase.from("event_registrations").insert({
+      event_id: event?.id,
+      user_id: user.id,
+    });
+
+    if (error) {
+      console.error("Error registering for event:", error);
+    } else {
+      setIsRegistered(true);
+    }
+  };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!event) return <div>Event not found</div>;
 
   return (
     <div className="max-w-3xl mx-auto">
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl">{event.title}</CardTitle>
-          <CardDescription>
-            {new Date(event.date).toLocaleString()}
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="mb-4">{event.description}</p>
+          <p className="mb-4">Date: {new Date(event.date).toLocaleString()}</p>
           <p className="mb-4">Location: {event.location}</p>
           <p className="mb-4">Capacity: {event.capacity}</p>
           <div className="mb-4">
@@ -103,10 +134,22 @@ export default function EventDetailPage() {
             </h3>
             <CountdownTimer targetDate={new Date(event.date)} />
           </div>
+          {user && !isRegistered && (
+            <Button onClick={handleRegister}>Register for Event</Button>
+          )}
+          {isRegistered && (
+            <p className="text-green-600 font-semibold">
+              You are registered for this event
+            </p>
+          )}
+          {!user && (
+            <p>
+              Please{" "}
+              <Button onClick={() => router.push("/login")}>log in</Button> to
+              register for this event
+            </p>
+          )}
         </CardContent>
-        <CardFooter>
-          <Button>Register for Event</Button>
-        </CardFooter>
       </Card>
     </div>
   );
