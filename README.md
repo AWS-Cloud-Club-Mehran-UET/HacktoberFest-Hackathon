@@ -1,135 +1,112 @@
-# Homework Management App
+# HacktoberFest-Hackathon
 
-A mobile app developed with React Native and Expo for managing homework tasks using data structures (Stack and Queue). Users can add, complete, and view their homework tasks efficiently.
+Welcome to our Hacktoberfest  Hackathon! This repository will serve as the central hub for participants to solve problems by contributing code to various GitHub issues. Read the instructions carefully to understand the workflow and rules for the event.
 
-## Table of Contents
+## 🛠️ Prerequisites
 
-- [Modules Overview](#modules-overview)
-- [Module 1: Initial Setup](#module-1-initial-setup)
-- [Module 2: Implement Data Structures](#module-2-implement-data-structures)
-- [Module 3: Implement Data Structures into Mobile App Interface](#module-3-implement-data-structures-into-mobile-app-interface)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+Before participating in this hackathon, please ensure you meet the following prerequisites:
 
-## Modules Overview
+- **GitHub Account:** You must have a valid GitHub account. If you don't have one yet, you can [sign up here](https://github.com/).
 
-The project is divided into several modules that guide the implementation of the app's features and functionality.
+- **Basic Git Knowledge:** You should be familiar with basic Git commands such as `clone`, `branch`, `add`, `commit`, `push`, and `pull request`. If you're new to Git, you can learn the basics [here](https://git-scm.com/doc).
+  
+- **Code Editor & Development Setup:** Have a code editor (e.g., VSCode, IntelliJ) installed and your development environment configured to solve issues.
 
-### Module 1: Initial Setup
+## 📄 Instructions
 
-#### Task 1.1: Project Setup
+For detailed instructions on participating in the hackathon, setting up the repository, solving issues, and submission guidelines, please refer to our **[Hackathon Instructions Document](https://docs.google.com/document/d/1-xa87VDyAcqjLjoqGDzZ4008pHPWZGPrj2EzoZmH8mo/edit?usp=sharing)**.
 
-- **Goal**: Initialize the mobile app project.
-- **Actions**:
-  - Created a new Mobile app project using Expo.
-  - Set up a basic folder structure (components, screens, assets).
-  - Pushed code to GitHub.
-  - Created pull request for the issue.
-- **Deliverable**: A running mobile app template.
+Make sure to go through this document thoroughly to understand the event flow, rules, and expectations.
 
-### Module 2: Implement Data Structures
+## 🏆 Judging Criteria
 
-#### Task 2.1: Create Stack and Queue Classes
+Participants will be judged based on the quality, creativity, and efficiency of their solutions. The detailed judging criteria are available in our **[Judging Criteria Document](https://docs.google.com/document/d/1n5aOBWRtrdKTFnfX2evyeVdj8qbS2nH07wn6eVlBU5A/edit?usp=sharing)**.
 
-- **Goal**: Implement the stack and queue data structures.
-- **Actions**:
-  - Created a `TaskQueue` class for managing pending homework tasks (FIFO).
-  - Created a `CompletedTasksStack` class for managing completed tasks (LIFO).
-- **Deliverable**: Working stacks and queue implementations.
+Please review this document to know how your contributions will be evaluated.
 
-#### Task 2.2: Integrate Data Structures into the App
+## 🔍 Some Example Issues
 
-- **Goal**: Use the stack and queue classes in the mobile app.
-- **Actions**:
-  - Created instances of `TaskQueue` and `CompletedTasksStack`.
-  - Implemented methods to add tasks to the queue and move them to the stack when completed.
-  - Pushed code to GitHub.
-  - Created pull request for the issue.
-- **Deliverable**: The app can now manage tasks with the implemented data structures.
+Looking for examples of the types of issues you'll be tackling during the hackathon? We’ve compiled a list of example issues to help you get started. You can view the examples here:  
+[Example Issues for Hacktoberfest](https://docs.google.com/document/d/1LzQAM4afa6o_ecTiU_3Qu9n-NOLGPyTKIEHONKSOQx4/edit?usp=sharing).
+  
 
-### Module 3: Implement Data Structures into Mobile App Interface
+## 📝 How to Participate
 
-#### Task 3.1: Build Add Task Interface
+### Step 1: Registration and Access
+1. Once registered, we will provide access to this repository. You will have write access, so ensure you use it responsibly.
+2. Clone the repository to your local machine using:
+   
+   ```bash
+   git clone https://github.com/AWS-Cloud-Club-Mehran-UET/HacktoberFest-Hackathon
 
-- **Goal**: Develop a user interface for adding homework tasks.
-- **Actions**:
-  - Created a form with a text input and a button to submit the new task.
-  - Connected the input to the `TaskQueue` to add tasks when the button is clicked.
-- **Deliverable**: Users can input tasks to be added to the queue.
+## Step 2: Explore Issues
 
-#### Task 4.1: Show Pending Tasks
+   1. Navigate to the Issues tab.
+   2. You can view all open issues, which represent problems to be solved during the hackathon.
 
-- **Goal**: Create a list view to display tasks from the queue.
-- **Actions**:
-  - Used a `FlatList` component to render the tasks from the `TaskQueue`.
-- **Deliverable**: The app displays a list of pending tasks.
+## Step 3: Assign Issues to Yourself
 
-#### Task 4.2: Implement Complete Task Functionality
+   1. You are allowed to assign up to 3 issues to yourself.
+   2. To assign an issue, go to the issue page, click the "Assignees" button on the right, and assign yourself the issue.
+   3. You will have 4 to 5 hours (depending on the event schedule) to work on the assigned issues.
 
-- **Goal**: Allow users to mark tasks as complete.
-- **Actions**:
-  - Added a button next to each task in the list for completing it.
-  - On button click, removed the task from the `TaskQueue` and added it to the `CompletedTasksStack`.
-- **Deliverable**: Users can complete tasks, and they are removed from the pending list.
+## Step 4: Create a New Branch
 
-#### Task 5.1: Show Completed Tasks
-
-- **Goal**: Create a separate view to display completed tasks.
-- **Actions**:
-  - Implemented a new screen or tab to show tasks from the `CompletedTasksStack`.
-  - Pushed code to GitHub.
-  - Created pull request for the issue.
-- **Deliverable**: Users can view their completed tasks.
+    git checkout -b team-name-<issue-number>
 
 
-
-## About React Native and Expo
-
-**React Native** is an open-source mobile application framework created by Facebook. It enables developers to build mobile apps using JavaScript and React, allowing for a seamless cross-platform experience on both iOS and Android. By leveraging native components, React Native provides a performance that is close to native applications while enabling rapid development.
-
-**Expo** is a set of tools and services built around React Native that helps streamline the development process. It provides a managed workflow, allowing developers to focus on building their apps without dealing with native code. Some key features of Expo include:
-
-- **Fast Development**: With features like hot reloading, developers can see the results of their changes instantly.
-- **Rich Library of Components**: Expo comes with a wide range of pre-built components and APIs for accessing device functionalities like the camera, location services, and push notifications.
-- **Cross-Platform Compatibility**: Build apps that work seamlessly on both iOS and Android without needing separate codebases.
-- **Easier Deployment**: Expo simplifies the process of deploying apps to app stores, making it easier for developers to release their applications to users.
+## Step 5: Solve the Issues
+  Work on solving the issues you have selected. Make sure to follow any guidelines or instructions given in the issue description.
+    Commit your changes frequently using meaningful commit messages:
 
 
-## Key Features
+    git add .
+    git commit -m "Fix issue #42: Improved UI performance"
 
-### AsyncStorage
+## Step 6: Describe Your Approach
+After solving the issue, you must describe your approach to solving the issue in your branch's README.md file. This is a mandatory step to ensure clarity and understanding of your solution.
 
-In this app, **AsyncStorage** is used to persist user data locally on the device. This allows the app to store and retrieve homework tasks even after the app is closed or restarted. The benefits of using AsyncStorage include:
+   Include details such as the logic you used, the challenges you faced, and how you overcame them.
 
-- **Local Storage**: Store user preferences and homework tasks without needing a backend server.
-- **Simple API**: Easy to use for basic key-value storage, making it suitable for lightweight data management.
-
-### Real-time Notifications
-
-The app implements **real-time notifications** to keep users informed about important updates, such as task deadlines or completion confirmations. This feature enhances user engagement and ensures that users stay on top of their homework tasks.
-
-- **Push Notifications**: Users receive notifications directly on their devices, reminding them of upcoming tasks and deadlines.
-- **Instant Updates**: Notifications can be sent as tasks are added, completed, or modified, providing a dynamic user experience.
-
-### Material UI Icons
-
-The app utilizes **Material UI Icons** to enhance the visual appeal of the user interface. These icons provide a clean and modern look, making the app more user-friendly. Key benefits include:
-
-- **Consistency**: Using Material UI icons ensures a consistent design language throughout the app.
-- **Wide Variety**: A vast collection of icons is available, allowing for flexibility in design and functionality.
-- **Easy Integration**: Icons can be easily added to buttons, lists, and other UI elements to improve usability.
+## Step 7: Push Your Code
+  Once you are done solving the issue, push your branch to the repository:
 
 
+      git push origin team-name-<issue-number>
+      
+  for example 
+      
+      git push origin issue-42
 
-## Usage
+## Step 8: Create a Pull Request (PR)
 
-- Open the app on your mobile device or emulator.
-- Add homework tasks using the input field and submit button.
-- View pending tasks in the list.
-- Mark tasks as complete to move them to the completed tasks section.
+   After pushing your code, create a pull request to merge your branch into the main branch. Ensure your PR description includes references to the issue number using:
 
-## APK File
 
-The APK file for the Homework Management App can be found in the "issue 7" folder. You can download and install it on your Android device for direct access to the application.
+    Resolves #<issue-number>
+
+   You must create the pull request before the time limit ends. If you fail to do so, your work will be considered null and void.
+
+## Step 9: Review and Feedback
+
+   Once the PR is created, our team will review the code. Make sure your solution is complete and well-documented.
+    If any changes are requested, make sure to update your PR within the given time frame.
+
+## Avoid the Use of AI Tools
+ Participants must avoid using AI tools (e.g., AI code generators, AI assistants) to solve issues. We value original problem-solving approaches and creativity. Any evidence of using AI to generate code will result in disqualification.
+ 
+## ⏳ Time Limits
+
+   Each participant has 4-5 hours to solve their assigned issues.
+    You must create a pull request before the time ends; otherwise, your submission will not be considered.
+
+## 🚫 Disqualification Rules
+
+ Failure to submit a PR before the time ends will result in the solution being considered null and void.
+    Any form of plagiarism or unauthorized use of third-party code without proper attribution will lead to disqualification.
+
+## 💡 Need Help?
+
+If you encounter any problems or need assistance, feel free to open a discussion in the repository, or contact the organizers directly.
+
+Let's make this Hacktoberfest an exciting and learning-filled event! 🎉
