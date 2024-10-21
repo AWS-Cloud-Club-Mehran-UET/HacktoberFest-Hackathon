@@ -1,6 +1,3 @@
-Here’s a `README.md` for your Sudoku solver, specifically tailored to the problem you described:
-
-```markdown
 # Sudoku Solver
 
 This project is a Java program designed to solve a standard 9x9 Sudoku puzzle. The puzzle is represented as a 2D array, where empty cells are indicated by the `.` character. The solution must comply with Sudoku rules, ensuring that each digit from 1-9 appears exactly once in each row, column, and 3x3 sub-box.
@@ -91,7 +88,3 @@ No solution exists
 
 ## Conclusion
 The implemented backtracking algorithm effectively solves Sudoku puzzles while adhering to the rules of the game. The solution is efficient and tested against various scenarios to ensure reliability.
-
-## License
-This project is open-source and available under the [MIT License](LICENSE).
-```
