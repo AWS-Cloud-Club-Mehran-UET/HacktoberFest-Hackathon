@@ -1,69 +1,76 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/contexts/AuthContext";
 
-export default function CreateEventPage() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  capacity: number;
+}
+
+export default function EditEventPage() {
+  const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const params = useParams();
   const router = useRouter();
   const supabase = createClientComponentClient();
-  const { user, isAdmin, getCurrentUser } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    async function loadUser() {
-      await getCurrentUser();
+    async function fetchEvent() {
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("id", params.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching event:", error);
+      } else {
+        setEvent(data);
+      }
       setIsLoading(false);
     }
-    loadUser();
-  }, [getCurrentUser]);
+
+    fetchEvent();
+  }, [params.id, supabase, user, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !isAdmin) {
-      console.error("User not authenticated or not an admin");
-      return;
-    }
+    if (!event) return;
 
-    const { data, error } = await supabase.from("events").insert([
-      {
-        title,
-        description,
-        date,
-        location,
-        capacity: parseInt(capacity),
-        creator_id: user.id,
-      },
-    ]);
+    const { error } = await supabase
+      .from("events")
+      .update(event)
+      .eq("id", event.id);
 
     if (error) {
-      console.error("Error creating event:", error);
+      console.error("Error updating event:", error);
     } else {
-      router.push("/events");
+      router.push("/dashboard");
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user || !isAdmin) {
-    return <div>You do not have permission to create events.</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (!event) return <div>Event not found</div>;
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Create New Event</h1>
+      <h1 className="text-3xl font-bold mb-6">Edit Event</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium mb-1">
@@ -71,8 +78,8 @@ export default function CreateEventPage() {
           </label>
           <Input
             id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={event.title}
+            onChange={(e) => setEvent({ ...event, title: e.target.value })}
             required
           />
         </div>
@@ -85,8 +92,10 @@ export default function CreateEventPage() {
           </label>
           <Textarea
             id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={event.description}
+            onChange={(e) =>
+              setEvent({ ...event, description: e.target.value })
+            }
             required
           />
         </div>
@@ -97,8 +106,8 @@ export default function CreateEventPage() {
           <Input
             id="date"
             type="datetime-local"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            value={event.date}
+            onChange={(e) => setEvent({ ...event, date: e.target.value })}
             required
           />
         </div>
@@ -108,8 +117,8 @@ export default function CreateEventPage() {
           </label>
           <Input
             id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={event.location}
+            onChange={(e) => setEvent({ ...event, location: e.target.value })}
             required
           />
         </div>
@@ -120,13 +129,15 @@ export default function CreateEventPage() {
           <Input
             id="capacity"
             type="number"
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
+            value={event.capacity}
+            onChange={(e) =>
+              setEvent({ ...event, capacity: parseInt(e.target.value) })
+            }
             required
           />
         </div>
         <Button type="submit" className="w-full">
-          Create Event
+          Update Event
         </Button>
       </form>
     </div>

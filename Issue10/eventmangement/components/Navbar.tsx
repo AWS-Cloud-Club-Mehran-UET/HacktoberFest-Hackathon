@@ -5,7 +5,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   return (
     <nav className="bg-background border-b">
@@ -26,6 +26,16 @@ const Navbar = () => {
           {user ? (
             <>
               <span>{user.email}</span>
+              {isAdmin && (
+                <>
+                  <Link href="/events/create">
+                    <Button variant="outline">Create Event</Button>
+                  </Link>
+                  <Link href="/dashboard">
+                    <Button variant="ghost">Dashboard</Button>
+                  </Link>
+                </>
+              )}
               <Button onClick={signOut}>Logout</Button>
             </>
           ) : (

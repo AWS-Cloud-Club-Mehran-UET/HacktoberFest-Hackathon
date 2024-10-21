@@ -1,25 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
   const supabase = createClientComponentClient();
+  const { user, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    async function loadUser() {
+      await getCurrentUser();
+      setIsLoading(false);
+    }
+    loadUser();
+  }, [getCurrentUser]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-
-    if (userError || !userData.user) {
+    if (!user) {
       console.error("User not authenticated");
       return;
     }
@@ -29,7 +38,7 @@ export default function CreatePostPage() {
         title,
         content,
         category,
-        user_id: userData.user.id,
+        user_id: user.id,
       },
     ]);
 
@@ -39,6 +48,14 @@ export default function CreatePostPage() {
       router.push("/community");
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <div>Please log in to create a post.</div>;
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
