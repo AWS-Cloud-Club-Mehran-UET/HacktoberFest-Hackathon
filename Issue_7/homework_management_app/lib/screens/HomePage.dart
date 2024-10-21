@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:homework_management_app/screens/AllTasks.dart';
 import 'package:homework_management_app/screens/CompletedTask.dart';
 import 'package:homework_management_app/screens/PendingTasks.dart';
 
@@ -20,7 +19,6 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> screens = [
     const PendingTasks(),
-    const ShowAllTasks(),
     const CompletedTasks(),
   ];
 
@@ -53,7 +51,6 @@ class _HomePageState extends State<HomePage> {
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.crop_square_sharp), label: "Pending"),
-            BottomNavigationBarItem(icon: Icon(Icons.all_inbox), label: "show"),
             BottomNavigationBarItem(icon: Icon(Icons.done), label: "Complete"),
           ]),
     );

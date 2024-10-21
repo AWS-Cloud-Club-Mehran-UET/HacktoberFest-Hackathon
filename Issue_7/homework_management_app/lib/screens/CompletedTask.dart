@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homework_management_app/Data_Structures/TaskStack.dart';
 
 class CompletedTasks extends StatefulWidget {
   const CompletedTasks({super.key});
@@ -12,14 +13,13 @@ class _CompletedTasksState extends State<CompletedTasks> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView.builder(
-            itemCount: 0,
+            itemCount: TaskStack.list.length,
             itemBuilder: (context, index) {
-              return const Card(
+              return Card(
                 color: Colors.blueGrey,
                 child: ListTile(
-                  title: Text("Title"),
-                  subtitle: Text("Description"),
-                  trailing: Icon(Icons.check),
+                  title: Text(TaskStack.list[index]['title']!),
+                  subtitle: Text(TaskStack.list[index]['description']!),
                 ),
               );
             }));

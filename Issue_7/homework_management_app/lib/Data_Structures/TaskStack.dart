@@ -1,46 +1,12 @@
-import 'package:flutter/material.dart';
+class TaskStack {
+  static  List<Map<String, String>> list = [];
 
-class TaskStack<T> {
-  final List<T> _items = [];
-  void push(T item) {
-    _items.add(item);
-  }
+  static void push(String title , String descritpion) => list.add({'title' : title , 'description' : descritpion});
 
-  T? pop() {
-    if (_items.isNotEmpty) {
-      return _items.removeLast();
-    }
-    return null;
-  }
-}
-
-class HomePage extends StatefulWidget {
-
-  HomePage({super.key});
+  static Map<String, String> pop() => list.removeLast();
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  String toString() => list.toString();
 }
 
-class _HomePageState extends State<HomePage> {
-  TaskStack<int> taskStack = TaskStack();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("This is "),
-      ),
-      body: Center(
-        child: Text(
-          "${taskStack._items}"
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        setState(() {
-          taskStack.push(taskStack._items.length+1);
-        });
-      } , child: const Icon(Icons.add),),
-    );
-  }
-}
 
