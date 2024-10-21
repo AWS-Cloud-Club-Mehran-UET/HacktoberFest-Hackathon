@@ -1,8 +1,6 @@
+import 'package:expense_tracker/view/monthly_expenses_screen.dart';
 import 'package:expense_tracker/widgets/expense_card.dart';
-import 'package:expense_tracker/widgets/monthly_expenses.dart';
-import 'package:expense_tracker/widgets/recent_expenses.dart';
-import 'package:expense_tracker/widgets/tab_button.dart';
-import 'package:expense_tracker/widgets/transaction_tile.dart';
+import 'package:expense_tracker/widgets/expenses_list.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +11,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    MonthlyExpensesScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var tabIndex = 0;
@@ -33,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    List<Widget> widgets = [MonthlyExpenses(), RecentExpenses()];
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 218, 214, 214),
       appBar: AppBar(
@@ -80,39 +88,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   expense: '11200'),
             ],
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Colors.white),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // TabButton(
-                //   buttonText: 'Recent',
-                //   onTap: () {
-                //     setState(() {
-                //       tabIndex = 0;
-                //     });
-                //   },
-                // ),
-                // TabButton(
-                //   buttonText: 'Monthly',
-                //   onTap: changeIndex,
-                // ),
-                ElevatedButton(
-                  onPressed: changeIndex(),
-                  child: Text('Recent'),
-                ),
-                ElevatedButton(
-                  onPressed: changeIndex(),
-                  child: Text('Monthly'),
-                ),
-              ],
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.black87,
+            child: const Center(
+              child: Text(
+                'Recent Expenses',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
-          Expanded(child: widgets[tabIndex]),
+          ExpensesList(),
         ],
       ),
     );
