@@ -1,0 +1,33 @@
+first i make the docker image the command is = docker run UBUNTU
+now when you push to Docker hub then first you make the repo the command is = docker tag UBUNTU fk0786/hcthon
+Now we push to DOcker hub the command is = docker push fk0786/hcthon
+
+Now i run my application On AWS so the pipeline code i used that is 
+
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/fk0786/dockerprojectms.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'docker build -t hcthon .'
+            }
+        }
+        stage('tag') {
+            steps {
+                sh 'docker tag hcthon $repos'
+            }
+        }
+        stage('push') {
+            steps {
+                sh 'docker login -u user -p password'
+                sh 'docker push $repos:latest'
+            }
+        }
+    }
+}
