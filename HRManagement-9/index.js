@@ -16,19 +16,6 @@ let empType = document.querySelector("#offBoardingForm #empType") ;
 document.querySelector("#offBoarding .options select #hrManager").onclick = displayEmployeeForm ;
 document.querySelector("#offBoarding .options select #employee").onclick = displayHRForm ;
 
-// document.querySelector("#offBoarding .options select #hrManager").addEventListener("click", function(){
-//     empType.classList.remove("hidden") ;
-//     empType.classList.add("flex") ;
-//     empType.value = "Employee" ;
-// });
-
-
-// document.querySelector("#offBoarding .options select #employee").add("click", function(){
-//     empType.classList.remove("hidden") ;
-//     empType.classList.add("flex") ;
-//     empType.value = "HR Manager" ;
-// });
-
 function displayEmployeeForm(){
     empType.classList.remove("hidden") ;
     empType.classList.add("flex") ;
