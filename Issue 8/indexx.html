@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Authentication Container -->
+    <div id="authContainer">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <button id="signupBtn">Sign Up</button>
+    </div>
+
+    <!-- Main Dashboard (Hidden by Default) -->
+    <section id="mainDashboard" style="display: none;">
+        <h1>Expense Tracker</h1>
+
+        <!-- Income Section -->
+        <section class="incomeSection">
+            <h3>Add Income</h3>
+            <input type="number" id="incomeAmount" placeholder="Amount">
+            <input type="text" id="incomeSource" placeholder="Source (e.g., Salary, Freelancing)">
+            <input type="date" id="incomeDate">
+            <button id="addIncomeBtn">Add Income</button>
+
+            <!-- Income List -->
+            <h3>Income Transactions</h3>
+            <ul id="incomeList"></ul>
+        </section>
+
+        <!-- Expense Section -->
+        <section class="expenseSection">
+            <h3>Add/Update Expense</h3>
+            <input type="number" id="expenseAmount" placeholder="Amount">
+            <select id="expenseCategory">
+                <option value="Food">Food</option>
+                <option value="Travel">Travel</option>
+                <option value="Entertainment">Entertainment</option>
+            </select>
+            <input type="text" id="expenseDescription" placeholder="Description">
+            <input type="date" id="expenseDate">
+            <button id="addExpenseBtn">Add Expense</button>
+            <button id="updateExpenseBtn" style="display: none;">Update Expense</button>
+
+            <!-- Search Expenses -->
+            <h3>Search Expenses</h3>
+            <input type="text" id="searchKeyword" placeholder="Search by keyword">
+            <input type="date" id="searchFromDate" placeholder="From">
+            <input type="date" id="searchToDate" placeholder="To">
+            <button id="searchBtn">Search</button>
+
+            <!-- Expense List -->
+            <h3>Expense Transactions</h3>
+            <ul id="expenseList"></ul>
+        </section>
+
+        <button id="logoutBtn">Logout</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
