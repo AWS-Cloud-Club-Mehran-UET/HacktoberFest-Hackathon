@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "lucide-react";
+import { User, Calendar, LayoutDashboard, LogOut } from "lucide-react";
 
 const Navbar = () => {
   const { user, isAdmin, userName, signOut } = useAuth();
@@ -47,17 +47,35 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/my-events">My Events</Link>
+                  <Link
+                    href="/my-events"
+                    className="flex items-center cursor-pointer"
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    <span>My Events</span>
+                  </Link>
                 </DropdownMenuItem>
                 {isAdmin && (
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center cursor-pointer"
+                    >
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem>
                   <ModeToggle />
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={signOut}>Logout</DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={signOut}
+                  className="flex items-center cursor-pointer"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (

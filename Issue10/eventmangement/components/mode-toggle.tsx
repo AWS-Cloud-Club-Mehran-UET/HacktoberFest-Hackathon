@@ -18,11 +18,14 @@ export function ModeToggle() {
       variant="ghost"
       size="sm"
       onClick={toggleTheme}
-      className="w-full justify-start"
+      className="w-full justify-start cursor-pointer"
     >
-      <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 mr-2" />
-      <Moon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 mr-2" />
-      Toggle theme
+      {theme === "light" ? (
+        <Moon className="mr-2 h-4 w-4" />
+      ) : (
+        <Sun className="mr-2 h-4 w-4" />
+      )}
+      <span>Toggle theme</span>
     </Button>
   );
 }
