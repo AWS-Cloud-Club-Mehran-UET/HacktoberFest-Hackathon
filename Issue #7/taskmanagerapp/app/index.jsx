@@ -17,8 +17,12 @@ const Welcome = () => {
         <Image source={require('../assets/images/welcome.png')} resizeMode='contain'  style={styles.welcome}/>
         
             <View style={{gap:20}}>
-                <Text style={styles.title}>LinkUp! </Text>
-                <Text style={styles.punchLine}>Where every thoughts finds a home  and evey image tells a story</Text>
+                <Text style={styles.title}>HomeWork Management  </Text>
+                <Text style={styles.punchLine}>
+                  
+                  Where every thoughts finds a home  and evey image tells a story
+                  
+                  </Text>
             </View>
 
             <View style={styles.footer}>
