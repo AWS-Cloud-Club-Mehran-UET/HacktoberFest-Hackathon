@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modern Website with Black Background</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000; /* Black background */
+            color: #fff; /* Light text for readability */
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff; /* White links */
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #111; /* Darker black for navbar */
+            padding: 1rem 2rem;
+            box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff6b6b; /* Light red for contrast */
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background-image: url('https://source.unsplash.com/1600x900/?tech,city');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero .btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #ff6b6b;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .hero .btn:hover {
+            background-color: #ff4f4f;
+        }
+
+        /* Feature Section */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 60px 20px;
+            background-color: #111; /* Darker section for contrast */
+            margin-top: -100px;
+            box-shadow: 0px -4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-box {
+            width: 30%;
+            padding: 20px;
+            background-color: #222; /* Dark grey background for features */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            color: #fff;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-box p {
+            color: #ddd;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: #000; /* Keeping the section black */
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .testimonials h2 {
+            margin-bottom: 40px;
+        }
+
+        .testimonial {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #222; /* Dark grey for testimonial box */
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #ccc; /* Lighter grey for text */
+        }
+
+        .testimonial h4 {
+            font-weight: bold;
+            color: #ff6b6b; /* Light red for names */
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 60px 20px;
+            background-color: #111; /* Darker section */
+        }
+
+        .contact h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact form input, .contact form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            background-color: #222;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .contact form button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ff6b6b;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact form button:hover {
+            background-color: #ff4f4f;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: #fff;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media(max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-box {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <h2>KOREJO</h2>
+        </div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Testimonials</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>Innovate Your Future</h1>
+            <p>Building modern solutions for a connected world. Explore our innovative services to boost your business.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature-box">
+            <h3>Fast Performance</h3>
+            <p>Our cutting-edge technology ensures your site runs fast, providing a smooth experience for your users.</p>
+        </div>
+        <div class="feature-box">
+            <h3>Secure Systems</h3>
+            <p>We prioritize security, keeping your data and your customer’s data safe with robust protection measures.</p>
+        </div>
+        <div class="feature-box">
+            <h3>Scalable Solutions</h3>
+            <p>From small startups to large enterprises, our scalable solutions grow with your business effortlessly.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonial">
+            <p>"This company helped us transform our digital presence. Highly recommend their services!"</p>
+            <h4>- Sarah Williams</h4>
+        </div>
+        <div class="testimonial">
+            <p>"Amazing experience! Our website is faster, more secure, and easy to scale thanks to them."</p>
+            <h4>- John Doe</h4>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <h2>Get in Touch</h2>
+        <form>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
