@@ -1,44 +1,43 @@
-### Hackathon Report: Sudoku Solver for Hacktoberfest - Team Lappucodes
+### Hackathon Report: ICU Readmission Prediction - Team Lappucodes
 
 *Project Overview:*
-For the Hacktoberfest hackathon, our team Lappucodes was assigned the task of creating a program to solve a 9x9 Sudoku puzzle. The challenge required that each row, column, and 3x3 sub-grid contain the digits 1-9 exactly once, with the input containing empty cells represented by the '.' character.
+For our third Hacktoberfest issue, Team Lappucodes was tasked with developing a machine learning model to predict the likelihood of a patient being readmitted to the ICU within 30 days of discharge. This predictive model aimed to assist hospitals in identifying high-risk patients and implementing timely interventions to reduce readmissions. The project involved working with anonymized patient data, including demographics, diagnosis codes, lab results, vital signs, and treatment history.
 
 *Challenges Faced:*
 
-1. *Handling Empty Cells Efficiently:*
-   The primary challenge was identifying an efficient way to fill in the empty cells without violating Sudoku’s constraints. As the board contained multiple empty spaces ('.'), the solution needed to backtrack when encountering invalid moves.
-   
-2. *Ensuring Uniqueness in Rows, Columns, and Sub-grids:*
-   Ensuring that each number appears only once in each row, column, and 3x3 sub-grid required an approach that could quickly validate the placement of digits without recalculating too much data.
+1. *Data Preprocessing:*
+   One of the biggest hurdles we encountered was handling the real-world nature of medical data, which included missing values, outliers, and an imbalanced class distribution (since readmissions are relatively rare). This required extensive cleaning and filling strategies, which was time-consuming.
 
-3. *Backtracking Optimization:*
-   One of the issues we faced was determining when to backtrack. Without an efficient backtracking mechanism, the solver could get stuck trying invalid paths repeatedly, resulting in excessive computational time.
+2. *Feature Engineering:*
+   We needed to create meaningful features from the dataset, particularly time-series data such as trends in patient vitals. It was difficult to identify which events (e.g., sudden drops in blood pressure) were significant for predicting readmissions, which impacted the feature selection process.
 
-4. *Validating Input Constraints:*
-   We needed to make sure that the program handled invalid input gracefully, ensuring the board dimensions were always 9x9 and the characters were either digits (1-9) or '.'.
+3. *Handling Class Imbalance:*
+   Since readmissions are rare, our dataset was heavily imbalanced. Finding an effective way to balance the classes was challenging, as oversampling readmitted patients or undersampling non-readmitted ones could affect model generalizability.
 
-*Algorithm Used:*
-We implemented a *Backtracking Algorithm* to solve the Sudoku puzzle. Backtracking is a depth-first search algorithm that tries out different possibilities for empty cells and rolls back when a constraint is violated (i.e., when a number is repeated in the row, column, or sub-grid).
+4. *Modeling Complexity:*
+   Although we experimented with several machine learning algorithms (like Random Forest and XGBoost), building an accurate model that effectively predicted ICU readmissions was complex. We encountered difficulties in fine-tuning hyperparameters and optimizing model performance, especially when trying to strike a balance between false positives and false negatives.
 
-*Steps to Solve:*
+*What We Accomplished:*
 
-1. *Find the Next Empty Cell:*
-   We loop through the grid to locate an empty cell ('.'). Once we identify an empty cell, we attempt to fill it with a number from 1 to 9.
+While we initially aimed to develop a full-fledged predictive model, we made significant progress with *data preprocessing* and *Python programming*. Here’s what we managed to accomplish:
 
-2. *Check if the Number is Valid:*
-   For each number, we check if it can be placed in the current cell by ensuring it is not already present in the current row, column, and 3x3 sub-grid.
+1. *Data Preprocessing:*
+   We cleaned the dataset by handling missing values using appropriate imputation techniques and dealt with outliers by capping or transforming them. We also used *SMOTE* (Synthetic Minority Over-sampling Technique) to balance the dataset, focusing on reducing class imbalance for better predictions.
 
-3. *Backtrack if Invalid:*
-   If the number placement violates the Sudoku rules, we backtrack by resetting the cell to '.' and trying the next possible number.
+2. *Feature Engineering:*
+   We extracted important time-series features, such as average vital signs over time, and derived features like lab result trends and treatment events. Although we didn’t fully complete the feature engineering phase, we identified key variables that could potentially influence readmission.
 
-4. *Recursive Solution:*
-   Once a valid number is placed, the algorithm moves on to solve the next empty cell recursively. If we reach a point where no valid number can be placed, the algorithm backtracks to the previous step and tries a different number.
+3. *Modeling:*
+   While our final model wasn’t fully tuned or deployed, we were able to use basic algorithms like Random Forest and XGBoost to generate initial predictions. However, the complexity of tuning these models to achieve high ROC-AUC and F1 scores proved challenging within the time frame.
 
-5. *Completion:*
-   The recursion continues until all cells are filled, providing the solved Sudoku board as the output.
+*Evaluation:*
+- We started evaluating the model using *ROC-AUC, **F1-score, and **Precision-Recall curves* to measure its performance. Our initial results indicated moderate success, but more work was needed to reduce false negatives, which were critical in this healthcare context.
 
-*Outcome:*
-Using the backtracking algorithm, we successfully solved the provided Sudoku puzzles. The program adhered to the constraints of rows, columns, and sub-grids, ensuring the uniqueness of each number. Our solution was able to handle various test cases efficiently and returned the correct output for all scenarios.
+*Next Steps:*
+To further enhance our model, we would focus on:
+- Improving feature engineering by incorporating more detailed time-series trends.
+- Tuning the model further to reduce false positives and negatives.
+- Integrating explainability tools like *SHAP* to interpret the most influential features driving predictions.
 
 *Conclusion:*
-The Sudoku solver project was a valuable learning experience for our team. We tackled challenges related to recursion, backtracking, and constraint satisfaction. By using the backtracking algorithm, we were able to solve complex Sudoku puzzles effectively, contributing to the success of our Hacktoberfest project.
+Though we faced difficulties in completing the entire project, our work on the dataset preprocessing and feature engineering provided a solid foundation for building a reliable ICU readmission model. This hackathon project was an eye-opener for our team regarding the challenges of working with medical data and developing clinically useful machine learning models.
