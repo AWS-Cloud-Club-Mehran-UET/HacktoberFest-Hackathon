@@ -9,10 +9,11 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-
+import Spinner from 'react-native-loading-spinner-overlay';
 const AddTask = () => {
   const [homework, setHomeWork] = useState();
   const [title, setTitle] = useState();
+  const [loading,setLoading]=useState(false);
 
   const resetform = () => {
     setTitle("");
@@ -20,12 +21,15 @@ const AddTask = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (homework == "" || homework == null) {
       Alert.alert("Please fill complete requirments");
+      setLoading(false);
       return;
     }
     if (title == "" || title == null) {
       Alert.alert("Please fill complete requirments");
+      setLoading(false);
       return;
     } else {
     }
@@ -38,15 +42,17 @@ const AddTask = () => {
 
       if (documentSnapshot.exists) {
         Alert.alert("Same HomeWork Already Exist");
+        setLoading(false);
         return false;
       } else {
         await documentRef.set({
-          title: title,
+          title: title.toLowerCase(),
           homework: homework,
           status:'pending',
         });
         resetform();
         Alert.alert("HomeWork Sucessfully Added");
+        setLoading(false);
       }
     } catch (error) {
       console.error(error);
@@ -55,7 +61,12 @@ const AddTask = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+        <Spinner
+        visible={loading}
+        size={'large'}
+        textContent={'Loading...'}
+        textStyle={{ color: '#FFF' }}
+      />
         <Text style={styles.sectionTitle}>Home Work</Text>
         <TextInput
           style={styles.title}
@@ -73,7 +84,7 @@ const AddTask = () => {
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
-      </ScrollView>
+   
     </View>
   );
 };

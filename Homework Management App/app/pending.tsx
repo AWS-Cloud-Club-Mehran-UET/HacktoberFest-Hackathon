@@ -10,10 +10,12 @@ import {
   StyleSheet,
 } from "react-native";
 import { db } from "../components/firebase";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const pending = () => {
   const [homeWork, setHomeWork] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [loading,setLoading]=useState(false)
   useEffect(() => {
     const collectionRef = db
       .collection("Task")
@@ -32,16 +34,28 @@ const pending = () => {
       .catch((error) => {
         console.log("Error getting engineers:", error);
       });
-  }, []);
+  }, [homeWork]);
 
   const handleSearch = (text) => {
     setSearchText(text);
   };
 
   const completed=async(item)=>{
-    db.collection('RequestService').doc(item.title).update({
-      status: "completed"
+    let title=item.title;
+    setLoading(true);
+    try{
+    const documentRef =await db.collection('Task').doc(title);
+    documentRef.update({
+      status:'completed',
+    }).then(()=>{
+      Alert.alert("Completed");
+    }).catch((er)=>{
+      console.log("Error",er)
     })
+  }
+  catch(error){
+    console.log("Error")
+  }
   }
     const filteredHomeWork = homeWork.filter(
       (homeWork) =>
@@ -51,6 +65,12 @@ const pending = () => {
 
   const renderItem = ({ item }) => (
     <View   style={{ flexDirection: "row", alignItems: "center", padding: 16 }}>
+        <Spinner
+        visible={loading}
+        size={'large'}
+        textContent={'Loading...'}
+        textStyle={{ color: '#FFF' }}
+      />
       <View style={{ flex: 1, flexDirection: "row" }}>
         <Image
           source={require("../assets/images/pending.png")}
@@ -83,7 +103,7 @@ const pending = () => {
       >
         <TextInput
           style={{ flex: 1, height: 40, padding: 6 }}
-          placeholder="Search Engineer by name"
+          placeholder="Search HomeWork by Title"
             onChangeText={handleSearch}
           value={searchText}
         />
