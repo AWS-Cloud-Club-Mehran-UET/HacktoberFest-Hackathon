@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          //TODO: use firestore methods
           ExpenseCard(
             backgroundColor: Colors.black54,
             expenseType: 'Account Balance',
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ExpenseCard(
                   backgroundColor: Colors.red,
-                  expenseType: 'Income',
+                  expenseType: 'Expense',
                   expense: '11200'),
             ],
           ),
