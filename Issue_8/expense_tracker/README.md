@@ -1,16 +1,13 @@
 # expense_tracker
 
-A new Flutter project.
+## SignUpScreen and Login 
+This project allows users to SignUp and Login in the Expense Tracker App
 
-## Getting Started
+## Home Screen 
+User can view total budget and total expenditures.
+The users can view all the details about their expenses.
 
-This project is a starting point for a Flutter application.
+# Detail Screen 
+The screen shows the details of each expense. 
+Allows users to see what type expense they had.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
