@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body class="bg-purple-100">
+
+    <div id="offBoarding" class="">
+        <h1 class="bg-purple-200 font-extrabold text-center py-5 text-3xl">Off Boarding Form</h1>
+        <section class="options bg-white w-fit py-2 px-4">
+            <label for="users" class="font-semibold">Select your user type: </label>
+            <select name="users" id="users">
+                <option value=""></option>
+                <option id="hrManager" value="HR Manager">HR Manager</option>
+                <option id="employee" value="Employee">Employee</option>
+                <!-- <option id="id1" value="" onclick="fetchUserData(this)">
+                    <p id="ID">1</p>
+                    <p>,</p>
+                    <p id="name">Woakes</p>
+                </option>
+
+                <option id="id2" value="" onclick="fetchUserData(this)">
+                    <p id="ID">2</p>
+                    <p>,</p>
+                    <p id="name">Stokes</p>
+                </option>
+
+                <option id="id3" value="" onclick="fetchUserData(this)">
+                    <p id="ID">3</p>
+                    <p>,</p>
+                    <p id="name">Sarah</p>
+                </option>
+
+                <option id="id4" value="" onclick="fetchUserData(this)">
+                    <p id="ID">4</p>
+                    <p>,</p>
+                    <p id="name">Hurrain</p>
+                </option> -->
+            </select>
+        </section>
+        <section id="offBoardingForm" class="bg-purple-300 flex flex-wrap items-center w-auto mx-4 lg:mx-44 mt-8 mb-16 px-16 py-6 space-y-5 space-x-6 rounded-lg">
+            <input class="hidden" type="text">
+            <input id="empType" class="py-2 px-4 border border-black hidden" type="text">
+            <input id="empID" class="py-2 px-4 border border-black" type="number"> 
+            <input id="empName" class="py-2 px-4 border border-black" type="text">
+            <input id="empDesg" class="py-2 px-4 border border-black" type="text">
+            <input id="empDept" class="py-2 px-4 border border-black" type="text">
+            <input id="empSal" class="py-2 px-4 border border-black" type="number">
+            <input id="emploDate" class="py-2 px-4 border border-black" type="date">
+            <input id="perEmail" class="py-2 px-4 border border-black" type="email">
+            <input id="orgEmail" class="py-2 px-4 border border-black" type="email">
+            <input id="empPhNo" class="py-2 px-4 border border-black" type="text">
+            <input id="empAdd" class="py-2 px-4 border border-black" type="text">
+            <textarea class="py-2 px-4 border border-black" cols="30" placeholder="Reason for Resignation" required></textarea>
+            <button class="py-2 px-4 bg-black font-bold text-purple-200" onclick="offBoarded()">Submit</button>
+        </section>
+    </div>
+
+</body>
+    <script src="./index.js"></script>
+</html>
