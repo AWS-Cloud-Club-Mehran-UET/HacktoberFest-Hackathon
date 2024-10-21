@@ -46,7 +46,7 @@ const AddTask = () => {
         return false;
       } else {
         await documentRef.set({
-          title: title.toLowerCase(),
+          title: title,
           homework: homework,
           status:'pending',
         });

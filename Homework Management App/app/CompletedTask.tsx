@@ -8,12 +8,14 @@ import {
   TextInput,
   Image,
   StyleSheet,
+  Modal,
 } from "react-native";
 import { db } from "../components/firebase";
 
 const CompletedTask = () => {
   const [homeWork, setHomeWork] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [showTask,setShowTask]=useState(false);
   useEffect(() => {
     const collectionRef = db
       .collection("Task")
@@ -44,6 +46,15 @@ const CompletedTask = () => {
 
   const renderItem = ({ item }) => (
     <View style={{ flexDirection: "row", alignItems: "center", padding: 16 }}>
+      <Modal visible={showTask}  >
+        <View style={styles.modalContainer}>
+          <Text style={styles.sectionTitle}>{item.title}</Text>
+          <Text>{item.homework}</Text>
+          <TouchableOpacity style={{ padding: 8 }} onPress={()=>setShowTask(false)}>
+        <Text style={{ color: "blue", fontSize: 17 }}>Close</Text>
+      </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <Image
           source={require("../assets/images/pending.png")}
@@ -53,7 +64,9 @@ const CompletedTask = () => {
           {item.title}
         </Text>
       </View>
-
+      <TouchableOpacity style={{ padding: 8 }} onPress={()=>setShowTask(true)}>
+        <Text style={{ color: "blue", fontSize: 17 }}>View</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={{ padding: 8 }}>
         <Text style={{ color: "green", fontSize: 17 }}>Completed</Text>
       </TouchableOpacity>
@@ -63,6 +76,8 @@ const CompletedTask = () => {
   return (
     <View style={{ display: "flex", marginVertical: 50 }}>
       <Text style={styles.sectionTitle}>Completed Home Work</Text>
+
+      
       <View
         style={{
           flexDirection: "row",
@@ -94,6 +109,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
     fontWeight: "600",
+  },
+modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  modalButton: {
+    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: 'gray',
+    color: 'white',
   },
 });
 export default CompletedTask;

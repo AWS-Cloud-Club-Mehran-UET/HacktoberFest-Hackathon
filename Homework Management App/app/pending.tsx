@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   StyleSheet,
+  Modal,
 } from "react-native";
 import { db } from "../components/firebase";
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -15,6 +16,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 const pending = () => {
   const [homeWork, setHomeWork] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [processingQueue, setProcessingQueue] = useState([]);
   const [loading,setLoading]=useState(false)
   useEffect(() => {
     const collectionRef = db
@@ -32,29 +34,72 @@ const pending = () => {
         setHomeWork(documents);
       })
       .catch((error) => {
-        console.log("Error getting engineers:", error);
+        console.log("Error getting homeWork:", error);
       });
   }, [homeWork]);
 
+
+  useEffect(() => {
+    const collectionRef = db
+      .collection("Task")
+      .where("status", "==", "pending");
+  
+    collectionRef
+      .get()
+      .then((querySnapshot) => {
+        const documents = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          documents.push({ ...data });
+        });
+        setHomeWork(documents);
+
+        //Creating State for LIPO
+        setProcessingQueue(documents);
+
+      })
+      .catch((error) => {
+        console.log("Error getting homeWork:", error);
+      });
+  }, []); // empty array ensures this effect runs only once on mount
+  
   const handleSearch = (text) => {
     setSearchText(text);
   };
 
+  const processNextTask = () => {
+    setProcessingQueue((prevQueue) => {
+      // Clone the queue and remove the first task (FIFO)
+      const newQueue = [...prevQueue];
+      const nextTask = newQueue.shift(); // FIFO: Take the first task
+      
+      if (nextTask) {
+        console.log("Processing task:", nextTask);
+        // Process the next task here...
+        // For example, you could mark it as "completed" or perform an API call
+      }
+
+      // Return the updated queue after processing
+      return newQueue;
+    });
+  };
+
   const completed=async(item)=>{
     let title=item.title;
+    console.log("Title",title)
     setLoading(true);
     try{
-    const documentRef =await db.collection('Task').doc(title);
-    documentRef.update({
-      status:'completed',
-    }).then(()=>{
-      Alert.alert("Completed");
-    }).catch((er)=>{
-      console.log("Error",er)
-    })
+      db.collection('Task').doc('chem').update({
+        status:'completed'
+      }).then(()=>{
+        Alert.alert("Task Completed")
+      }).catch((e)=>{
+        console.log("Erro",e)
+      })
   }
   catch(error){
-    console.log("Error")
+    console.log("Error");
+    setLoading(false);
   }
   }
     const filteredHomeWork = homeWork.filter(
@@ -65,6 +110,7 @@ const pending = () => {
 
   const renderItem = ({ item }) => (
     <View   style={{ flexDirection: "row", alignItems: "center", padding: 16 }}>
+     
         <Spinner
         visible={loading}
         size={'large'}
