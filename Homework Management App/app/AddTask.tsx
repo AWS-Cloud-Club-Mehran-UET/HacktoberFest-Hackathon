@@ -1,3 +1,4 @@
+import { db } from "@/components/firebase";
 import React, { useState } from "react";
 import {
   View,
@@ -11,19 +12,44 @@ import {
 
 const AddTask = () => {
   const [homework, setHomeWork] = useState();
+  const [title, setTitle] = useState();
 
-    const resetform =()=>{
-      setHomeWork('');
-      }
+  const resetform = () => {
+    setTitle("");
+    setHomeWork("");
+  };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (homework == "" || homework == null) {
-      Alert.alert("Please enter student name");
+      Alert.alert("Please fill complete requirments");
       return;
     }
+    if (title == "" || title == null) {
+      Alert.alert("Please fill complete requirments");
+      return;
+    } else {
+    }
+    try {
+      const usersCollection = db.collection("Task");
 
-    else{
-        
+      const documentRef = usersCollection.doc(title);
+
+      const documentSnapshot = await documentRef.get();
+
+      if (documentSnapshot.exists) {
+        Alert.alert("Same HomeWork Already Exist");
+        return false;
+      } else {
+        await documentRef.set({
+          title: title,
+          homework: homework,
+          status:'pending',
+        });
+        resetform();
+        Alert.alert("HomeWork Sucessfully Added");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -31,6 +57,12 @@ const AddTask = () => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.sectionTitle}>Home Work</Text>
+        <TextInput
+          style={styles.title}
+          placeholder="Title Of HomeWork"
+          value={title}
+          onChangeText={(text) => setTitle(text)}
+        />
         <TextInput
           style={styles.input}
           placeholder="Please Insert your work"
@@ -59,6 +91,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 100,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 16,
+    padding: 8,
+  },
+  title: {
+    height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 16,
