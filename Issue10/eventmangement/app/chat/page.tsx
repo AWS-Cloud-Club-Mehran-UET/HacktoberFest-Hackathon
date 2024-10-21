@@ -6,7 +6,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Send, Circle } from "lucide-react";
+import { Send, Circle, Search } from "lucide-react";
 
 // Add this helper function at the top of the file, outside of the component
 function getUsername(email: string): string {
@@ -29,9 +29,11 @@ interface Message {
 
 export default function ChatPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const { user } = useAuth();
   const supabase = createClientComponentClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -69,29 +71,40 @@ export default function ChatPage() {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    filterUsers();
+  }, [searchQuery, users]);
+
   const fetchUsers = async () => {
-    if (!user) return; // Ensure the current user is logged in
+    if (!user) return;
 
     try {
       const { data, error } = await supabase
-        .from("user_profiles") // Changed from 'profiles' to 'user_profiles'
+        .from("user_profiles")
         .select("id, email")
-        .neq("id", user.id); // Exclude the current user
+        .neq("id", user.id);
 
       if (error) {
         throw error;
       }
 
-      setUsers(
-        data.map((profile) => ({
-          id: profile.id,
-          email: profile.email,
-          is_online: false, // We'll update this with real-time presence later
-        }))
-      );
+      const fetchedUsers = data.map((profile) => ({
+        id: profile.id,
+        email: profile.email,
+        is_online: false,
+      }));
+      setUsers(fetchedUsers);
+      setFilteredUsers(fetchedUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  };
+
+  const filterUsers = () => {
+    const filtered = users.filter((u) =>
+      u.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredUsers(filtered);
   };
 
   const updateOnlineStatus = (onlineUsers: Record<string, any>) => {
@@ -186,31 +199,43 @@ export default function ChatPage() {
       {/* Sidebar */}
       <div className="w-1/4 bg-white border-r border-gray-200 overflow-y-auto">
         <h2 className="text-xl font-semibold p-4 border-b">Contacts</h2>
-        <div className="space-y-2 p-4">
-          {users.map((u) => (
-            <button
-              key={u.id}
-              onClick={() => setSelectedUser(u)}
-              className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 hover:bg-gray-100 transition ${
-                selectedUser?.id === u.id ? "bg-blue-100" : ""
-              }`}
-            >
-              <div className="relative">
-                <Circle className="h-10 w-10 text-gray-300" />
-                <span
-                  className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${
-                    u.is_online ? "bg-green-500" : "bg-gray-300"
-                  }`}
-                ></span>
-              </div>
-              <div>
-                <p className="font-medium">{getUsername(u.email)}</p>
-                <p className="text-sm text-gray-500">
-                  {u.is_online ? "Online" : "Offline"}
-                </p>
-              </div>
-            </button>
-          ))}
+        <div className="p-4">
+          <div className="flex items-center mb-4">
+            <Input
+              type="text"
+              placeholder="Search users..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-grow"
+            />
+            <Search className="ml-2 h-5 w-5 text-gray-400" />
+          </div>
+          <div className="space-y-2">
+            {filteredUsers.map((u) => (
+              <button
+                key={u.id}
+                onClick={() => setSelectedUser(u)}
+                className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 hover:bg-gray-100 transition ${
+                  selectedUser?.id === u.id ? "bg-blue-100" : ""
+                }`}
+              >
+                <div className="relative">
+                  <Circle className="h-10 w-10 text-gray-300" />
+                  <span
+                    className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${
+                      u.is_online ? "bg-green-500" : "bg-gray-300"
+                    }`}
+                  ></span>
+                </div>
+                <div>
+                  <p className="font-medium">{getUsername(u.email)}</p>
+                  <p className="text-sm text-gray-500">
+                    {u.is_online ? "Online" : "Offline"}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
