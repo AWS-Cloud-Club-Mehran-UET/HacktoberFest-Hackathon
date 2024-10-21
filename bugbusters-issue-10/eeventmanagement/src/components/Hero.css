@@ -1,0 +1,50 @@
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the left */
+    height: auto; /* Adjust height to auto to allow content to expand */
+    background-color: #f8f9fa;
+    text-align: left; /* Align text to the left */
+    padding-left: 2rem; /* Add padding to the left */
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    color: #343a40;
+    margin-bottom: 1rem;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+    color: #6c757d;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-content {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 2rem; /* Add margin to the bottom to separate from events */
+  }
+  
+  .calendar {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px; /* Add rounded corners */
+    overflow: hidden; /* Ensure rounded corners are applied */
+  }
+  
+  .login-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem; /* Add margin to the bottom to separate from content */
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }

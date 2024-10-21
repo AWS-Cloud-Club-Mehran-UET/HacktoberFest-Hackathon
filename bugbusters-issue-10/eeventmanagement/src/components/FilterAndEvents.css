@@ -1,0 +1,64 @@
+.filter-and-events {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 2rem; /* Add margin to the left to align beside the calendar */
+  }
+  
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Add space between the elements */
+    margin-bottom: 1rem; /* Add margin to the bottom to separate from events */
+  }
+  
+  .filter-dropdown {
+    margin-right: 1rem; /* Add margin to the right for spacing */
+  }
+  
+  .filter-reset {
+    margin-left: 1rem; /* Add margin to the left for spacing */
+  }
+  
+  .events {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .event-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-card h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .event-card p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+  
+  .countdown {
+    margin-top: 1rem;
+    color: #d9534f; /* Bootstrap danger color */
+  }
+  
+  .register-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }

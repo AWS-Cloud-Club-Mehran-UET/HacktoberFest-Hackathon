@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "date": "2024-10-23",
+      "title": "Sample Event 1",
+      "description": "This is a sample event."
+    },
+    {
+      "id": 2,
+      "date": "2024-10-22",
+      "title": "HacktoberFest Hackathon",
+      "description": "Day-02 Panel Talk"
+    },
+    {
+      "id": 3,
+      "date": "2024-10-21",
+      "title": "HacktoberFest Hackathon",
+      "description": "Day-01 Hackathon"
+    }
+  ]
