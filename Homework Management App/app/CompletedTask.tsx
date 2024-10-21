@@ -29,7 +29,7 @@ const CompletedTask = () => {
           const data = doc.data();
           documents.push({ ...data });
         });
-        setHomeWork(documents);
+        setHomeWork((documents).reverse());
       })
       .catch((error) => {
         console.log("Error getting engineers:", error);

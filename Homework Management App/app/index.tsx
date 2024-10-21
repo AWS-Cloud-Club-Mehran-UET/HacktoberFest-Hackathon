@@ -1,22 +1,20 @@
 import { router } from "expo-router";
-import React, { useEffect } from "react";
-import {
-  Alert,
-  View,
-  BackHandler,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 
 const index = () => {
   return (
     <View style={styles.container}>
       <Image
-        style={{ display: "flex", alignItems: "center" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: 100,
+          height: 100,
+        }}
         source={require("../assets/images/Logo.png")}
       ></Image>
+
       <View style={styles.rowContainer}>
         <View style={styles.cardContainer}>
           <Image
@@ -70,6 +68,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f0f0f0",
     padding: 10,
+    marginVertical: 20,
   },
   rowContainer: {
     marginTop: 10,
