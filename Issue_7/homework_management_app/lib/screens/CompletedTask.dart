@@ -12,11 +12,11 @@ class _CompletedTasksState extends State<CompletedTasks> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView.builder(
-            itemCount: 4,
+            itemCount: 0,
             itemBuilder: (context, index) {
-              return Card(
+              return const Card(
                 color: Colors.blueGrey,
-                child: const ListTile(
+                child: ListTile(
                   title: Text("Title"),
                   subtitle: Text("Description"),
                   trailing: Icon(Icons.check),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homework_management_app/Data_Structures/TaskQueue.dart';
+import 'package:homework_management_app/screens/add_tasks.dart';
 
 class PendingTasks extends StatefulWidget {
   const PendingTasks({super.key});
@@ -8,20 +10,23 @@ class PendingTasks extends StatefulWidget {
 }
 
 class _PendingTasksState extends State<PendingTasks> {
+  TaskQueue taskQueue = TaskQueue();
+
   @override
   Widget build(BuildContext context) {
+    print(taskQueue.taskQueue);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(right: 2.0, left: 2),
         child: ListView.builder(
-            itemCount: 4,
+            itemCount: taskQueue.taskQueue.length,
             itemBuilder: (context, index) {
-              return const Card(
+              return Card(
                 color: Colors.grey,
                 child: ListTile(
-                  title: Text("Title"),
-                  subtitle: Text("Description"),
-                  trailing: Row(
+                  title: Text(taskQueue.taskQueue[index]['title']!),
+                  subtitle: Text(taskQueue.taskQueue[index]['description']!),
+                  trailing: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
@@ -45,7 +50,10 @@ class _PendingTasksState extends State<PendingTasks> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddTasks()));
+        },
         child: const Icon(
           Icons.add,
           color: Colors.black,
