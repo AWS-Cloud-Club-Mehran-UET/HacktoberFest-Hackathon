@@ -137,7 +137,9 @@ const pending = () => {
   );
 
   return (
-    <View style={{ display: "flex", marginVertical: 50 }}>
+    <View style={{ padding: 24,
+      display: "flex",
+      marginVertical: 100,}}>
       <Text style={styles.sectionTitle}>Home Work</Text>
       <View
         style={{
