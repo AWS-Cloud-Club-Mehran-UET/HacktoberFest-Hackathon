@@ -1,16 +1,21 @@
-# expense_tracker
+#Expense Tracker App
 
-A new Flutter project.
+##Technologies used
+1. Flutter
+2. Dart
+3. Firebase
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+##Explanation
 
-A few resources to get you started if this is your first Flutter project:
+###UI and Integeration
+Used Flutter for UI as it uses 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+###Authentication
+Used FirebaseAuth to authenticate the user
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+###Storage
+Used Firestore database to save the data
+
+###Chart
+Used fl_chart for visualizing expenses
