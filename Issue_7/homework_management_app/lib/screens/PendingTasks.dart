@@ -14,7 +14,7 @@ class _PendingTasksState extends State<PendingTasks> {
       body: Padding(
         padding: const EdgeInsets.only(right: 2.0, left: 2),
         child: ListView.builder(
-            itemCount: 12,
+            itemCount: 4,
             itemBuilder: (context, index) {
               return const Card(
                 color: Colors.grey,
