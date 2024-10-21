@@ -14,18 +14,24 @@ class AddTasks extends StatelessWidget {
       ),
       body: Column(
         children: [
-          TextFormField(
-            decoration: InputDecoration(
-                hintText: 'Enter title', border: OutlineInputBorder()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: TextFormField(
+              decoration: InputDecoration(
+                  hintText: 'Enter title', border: OutlineInputBorder()),
+            ),
           ),
-          TextFormField(
-            decoration: InputDecoration(
-                hintText: 'Enter description', border: OutlineInputBorder()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: TextFormField(
+              decoration: InputDecoration(
+                  hintText: 'Enter description', border: OutlineInputBorder()),
+            ),
           ),
           SizedBox(height: 20,),
+          ElevatedButton(onPressed: (){}, child: Text("Add Task"))
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){}, child: Center(child: Text("Add Task")),),
     );
     
   }
