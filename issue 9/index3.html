@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional HR Management Dashboard">
+    <title>HR Management Dashboard</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #34495e;
+            font-size: 16px;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .hero {
+            background: linear-gradient(to right, #3498db, #9b59b6);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .hero .btn-primary {
+            background-color: #f39c12;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .hero .btn-primary:hover {
+            background-color: #e67e22;
+        }
+
+        .section {
+            padding: 50px 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #34495e;
+        }
+
+        .employee-table,
+        .query-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .employee-table th,
+        .employee-table td,
+        .query-table th,
+        .query-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .employee-table th,
+        .query-table th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+
+        .employee-table tr:nth-child(even),
+        .query-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-right: 20px;
+        }
+
+        .search-bar button {
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #2980b9;
+        }
+
+        .form {
+            margin-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .form button {
+            padding: 12px 30px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form button:hover {
+            background-color: #d35400;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #34495e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">HR Dashboard</div>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Employees</a>
+                <a href="#">Queries</a>
+                <a href="#">Reports</a>
+                <a href="#">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to HR Management</h2>
+            <p>Your centralized platform for managing employees and queries efficiently.</p>
+            <a href="#" class="btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Employee Management Section -->
+    <section class="section employee-directory">
+        <div class="container">
+            <h2 class="section-title">Employee Directory</h2>
+            <div class="search-bar">
+                <input type="text" placeholder="Search Employees...">
+                <button class="btn-search">Search</button>
+            </div>
+
+            <!-- Employee Table -->
+            <table class="employee-table" id="employeeTable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Department</th>
+                        <th>Hire Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>John Doe</td>
+                        <td>Software Engineer</td>
+                        <td>IT</td>
+                        <td>2020-05-15</td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>Jane Smith</td>
+                        <td>HR Manager</td>
+                        <td>HR</td>
+                        <td>2018-08-22</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- New Employee Form -->
+    <section class="section new-employee">
+        <div class="container">
+            <h2 class="section-title">Add New Employee</h2>
+            <form class="form" id="employeeForm">
+                <input type="text" id="empID" placeholder="Employee ID" required>
+                <input type="text" id="empName" placeholder="Full Name" required>
+                <input type="email" id="empEmail" placeholder="Email Address" required>
+                <input type="text" id="empPosition" placeholder="Position" required>
+                <input type="text" id="empDepartment" placeholder="Department" required>
+                <input type="date" id="empHireDate" placeholder="Hire Date" required>
+                <button type="submit">Add Employee</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 HR Management. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('employeeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const empID = document.getElementById('empID').value;
+            const empName = document.getElementById('empName').value;
+            const empEmail = document.getElementById('empEmail').value;
+            const empPosition = document.getElementById('empPosition').value;
+            const empDepartment = document.getElementById('empDepartment').value;
+            const empHireDate = document.getElementById('empHireDate').value;
+
+            const employeeTable = document.getElementById('employeeTable').getElementsByTagName('tbody')[0];
+            const newRow = employeeTable.insertRow();
+
+            newRow.insertCell(0).textContent = empID;
+            newRow.insertCell(1).textContent = empName;
+            newRow.insertCell(2).textContent = empPosition;
+            newRow.insertCell(3).textContent = empDepartment;
+            newRow.insertCell(4).textContent = empHireDate;
+
+            // Reset form fields
+            document.getElementById('employeeForm').reset();
+        });
+    </script>
+
+</body>
+
+</html>

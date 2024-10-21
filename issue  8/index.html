@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body.dark-mode {
+            background-color: #333;
+            color: #f1f1f1;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        #auth button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #auth button:hover {
+            background-color: #0056b3;
+        }
+
+        .summary, .transactions, .expense-form, .income-form, .budget-form, .report-form {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .summary,
+        body.dark-mode .transactions,
+        body.dark-mode .expense-form,
+        body.dark-mode .income-form,
+        body.dark-mode .budget-form,
+        body.dark-mode .report-form {
+            background-color: #444;
+            border-color: #666;
+        }
+
+        .summary h3, .transactions h3, .expense-form h3, .income-form h3, .budget-form h3, .report-form h3 {
+            color: #343a40;
+        }
+
+        input {
+            width: calc(33% - 10px);
+            padding: 10px;
+            margin: 5px 5px 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        
+        .transactions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .transactions li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transactions li button {
+            background-color: #dc3545;
+        }
+
+        .transactions li button:hover {
+            background-color: #c82333;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        
+        .feedback {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Expense Tracker</h1>
+            <div id="auth">
+                <button id="login-btn">Login</button>
+                <button id="signup-btn">Sign Up</button>
+                <button id="logout-btn" style="display:none;">Logout</button>
+                <button id="toggle-theme-btn">Toggle Dark Mode</button>
+            </div>
+        </header>
+    
+        <div id="dashboard" style="display:none;">
+            <h2>Dashboard</h2>
+            <div class="summary">
+                <h3>Financial Summary</h3>
+                <p>Total Income: <span id="total-income">0</span></p>
+                <p>Total Expenses: <span id="total-expenses">0</span></p>
+                <p>Current Balance: <span id="balance">0</span></p>
+            </div>
+            <div class="transactions">
+                <h3>Recent Transactions</h3>
+                <ul id="transaction-list"></ul>
+            </div>
+            <div class="expense-form">
+                <h3>Add Expense</h3>
+                <input type="number" id="expense-amount" placeholder="Amount" required>
+                <input type="text" id="expense-category" placeholder="Category" required>
+                <input type="text" id="expense-description" placeholder="Description">
+                <button id="add-expense-btn">Add Expense</button>
+            </div>
+            <div class="income-form">
+                <h3>Add Income</h3>
+                <input type="number" id="income-amount" placeholder="Amount" required>
+                <input type="text" id="income-source" placeholder="Income Source" required>
+                <button id="add-income-btn">Add Income</button>
+            </div>
+            <div class="budget-form">
+                <h3>Budget Management</h3>
+                <input type="number" id="budget-amount" placeholder="Set Budget">
+                <button id="set-budget-btn">Set Budget</button>
+                <p id="budget-feedback" class="feedback"></p>
+                <h4>Budget Tracking</h4>
+                <p>Remaining Budget: <span id="remaining-budget">0</span></p>
+            </div>
+            <div class="report-form">
+                <h3>Budget Reports</h3>
+                <button id="generate-report-btn">Generate Report</button>
+                <p id="report-output"></p>
+            </div>
+        </div>
+
+        
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-login">&times;</span>
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="submit-login-btn">Login</button>
+                <p id="login-feedback" class="feedback"></p>
+            </div>
+        </div>
+
+        
+        <div id="signup-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="close-signup">&times;</span>
+                <h2>Sign Up</h2>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button id="submit-signup-btn">Sign Up</button>
+                <p id="signup-feedback" class="feedback"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        const transactions = [];
+        let budget = 0;
+
+        document.getElementById("login-btn").onclick = () => showModal('login');
+        document.getElementById("signup-btn").onclick = () => showModal('signup');
+        document.getElementById("logout-btn").onclick = logout;
+
+        document.getElementById("close-login").onclick = () => closeModal('login');
+        document.getElementById("close-signup").onclick = () => closeModal('signup');
+
+        document.getElementById("submit-login-btn").onclick = login;
+        document.getElementById("submit-signup-btn").onclick = signup;
+
+        document.getElementById("add-expense-btn").onclick = addExpense;
+        document.getElementById("add-income-btn").onclick = addIncome;
+        document.getElementById("set-budget-btn").onclick = setBudget;
+        document.getElementById("generate-report-btn").onclick = generateReport;
+
+        document.getElementById("toggle-theme-btn").onclick = toggleTheme;
+
+        window.onload = function () {
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        function showModal(type) {
+            document.getElementById(`${type}-modal`).style.display = "block";
+        }
+
+        function closeModal(type) {
+            document.getElementById(`${type}-modal`).style.display = "none";
+        }
+
+        function login() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            
+            if (email && password) {
+                document.getElementById("auth").style.display = "none";
+                document.getElementById("dashboard").style.display = "block";
+                closeModal('login');
+                resetLoginForm();
+            } else {
+                document.getElementById("login-feedback").textContent = "Invalid credentials!";
+            }
+        }
+
+        function signup() {
+            const email = document.getElementById("signup-email").value;
+            const password = document.getElementById("signup-password").value;
+
+            
+            if (email && password) {
+                document.getElementById("signup-feedback").textContent = "Signup successful!";
+                closeModal('signup');
+                resetSignupForm();
+            } else {
+                document.getElementById("signup-feedback").textContent = "Please fill all fields!";
+            }
+        }
+
+        function addExpense() {
+            const amount = parseFloat(document.getElementById("expense-amount").value);
+            const category = document.getElementById("expense-category").value;
+            const description = document.getElementById("expense-description").value;
+
+            if (!amount || !category) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            totalExpenses += amount;
+            transactions.push({ amount, category, description, type: 'expense' });
+            updateDashboard();
+            clearExpenseForm();
+        }
+
+        function addIncome() {
+            const amount = parseFloat(document.getElementById("income-amount").value);
+            const source = document.getElementById("income-source").value;
+
+            if (!amount || !source) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            totalIncome += amount;
+            transactions.push({ amount, category: source, description: '', type: 'income' });
+            updateDashboard();
+            clearIncomeForm();
+        }
+
+        function setBudget() {
+            const amount = parseFloat(document.getElementById("budget-amount").value);
+            if (!amount || amount < 0) {
+                alert("Please enter a valid budget amount.");
+                return;
+            }
+            budget = amount;
+            document.getElementById("remaining-budget").textContent = budget - totalExpenses;
+            document.getElementById("budget-feedback").textContent = "Budget set successfully!";
+            document.getElementById("budget-amount").value = '';
+        }
+
+        function generateReport() {
+            let report = "Budget Report:\n";
+            report += `Total Income: ${totalIncome}\n`;
+            report += `Total Expenses: ${totalExpenses}\n`;
+            report += `Current Balance: ${totalIncome - totalExpenses}\n`;
+            report += `Remaining Budget: ${budget - totalExpenses}\n`;
+
+            document.getElementById("report-output").textContent = report;
+        }
+
+        function clearExpenseForm() {
+            document.getElementById("expense-amount").value = '';
+            document.getElementById("expense-category").value = '';
+            document.getElementById("expense-description").value = '';
+        }
+
+        function clearIncomeForm() {
+            document.getElementById("income-amount").value = '';
+            document.getElementById("income-source").value = '';
+        }
+
+        function updateDashboard() {
+            document.getElementById("total-expenses").textContent = totalExpenses;
+            document.getElementById("total-income").textContent = totalIncome;
+            document.getElementById("balance").textContent = (totalIncome - totalExpenses);
+            document.getElementById("remaining-budget").textContent = budget - totalExpenses;
+
+            const transactionList = document.getElementById("transaction-list");
+            transactionList.innerHTML = '';
+            transactions.forEach((transaction, index) => {
+                const li = document.createElement("li");
+                li.textContent = `${transaction.amount} - ${transaction.category} ${transaction.type === 'expense' ? `- ${transaction.description}` : ''}`;
+                
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.onclick = () => deleteTransaction(index);
+                li.appendChild(deleteBtn);
+
+                transactionList.appendChild(li);
+            });
+        }
+
+        function deleteTransaction(index) {
+            const transaction = transactions[index];
+            if (transaction.type === 'expense') {
+                totalExpenses -= transaction.amount;
+            } else {
+                totalIncome -= transaction.amount;
+            }
+            transactions.splice(index, 1);
+            updateDashboard();
+        }
+
+        function logout() {
+            document.getElementById("auth").style.display = "block";
+            document.getElementById("dashboard").style.display = "none";
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        }
+
+        function resetLoginForm() {
+            document.getElementById("login-email").value = '';
+            document.getElementById("login-password").value = '';
+            document.getElementById("login-feedback").textContent = '';
+        }
+
+        function resetSignupForm() {
+            document.getElementById("signup-email").value = '';
+            document.getElementById("signup-password").value = '';
+            document.getElementById("signup-feedback").textContent = '';
+        }
+    </script>
+</body>
+</html>
