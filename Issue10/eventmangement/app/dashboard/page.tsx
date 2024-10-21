@@ -27,6 +27,7 @@ interface Event {
 
 interface EventRegistration {
   event_id: string;
+  event_title: string;
   count: number;
 }
 
@@ -62,7 +63,12 @@ export default function DashboardPage() {
       const { data: registrationsData, error: registrationsError } =
         await supabase
           .from("event_registrations")
-          .select("event_id, count", { count: "exact" })
+          .select(
+            `
+          event_id,
+          events (title)
+        `
+          )
           .order("event_id");
 
       if (registrationsError) {
@@ -75,7 +81,11 @@ export default function DashboardPage() {
           if (existingEvent) {
             existingEvent.count += 1;
           } else {
-            acc.push({ event_id: curr.event_id, count: 1 });
+            acc.push({
+              event_id: curr.event_id,
+              event_title: curr.events.title,
+              count: 1,
+            });
           }
           return acc;
         }, [] as EventRegistration[]);
@@ -142,7 +152,7 @@ export default function DashboardPage() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={registrations}>
-                <XAxis dataKey="event_id" />
+                <XAxis dataKey="event_title" />
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="count" fill="#8884d8" />
@@ -162,6 +172,10 @@ export default function DashboardPage() {
               <p>Date: {new Date(event.date).toLocaleString()}</p>
               <p>Location: {event.location}</p>
               <p>Capacity: {event.capacity}</p>
+              <p>
+                Registrations:{" "}
+                {registrations.find((r) => r.event_id === event.id)?.count || 0}
+              </p>
               <div className="mt-4 space-x-2">
                 <Link href={`/dashboard/events/${event.id}/edit`}>
                   <Button variant="outline">Edit</Button>
