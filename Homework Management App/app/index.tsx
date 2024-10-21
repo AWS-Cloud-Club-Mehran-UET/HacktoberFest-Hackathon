@@ -13,14 +13,22 @@ import {
 const index = () => {
   return (
     <View style={styles.container}>
-      <Image style={{display:'flex',alignItems:'center',}} source={require('../assets/images/Logo.png')}></Image>
+      <Image
+        style={{ display: "flex", alignItems: "center" }}
+        source={require("../assets/images/Logo.png")}
+      ></Image>
       <View style={styles.rowContainer}>
         <View style={styles.cardContainer}>
           <Image
             source={require("../assets/images/AddTask.png")}
             style={styles.cardImage}
           />
-          <TouchableOpacity style={[styles.touchContainer]} onPress={()=>{router.push('./AddTask')}}>
+          <TouchableOpacity
+            style={[styles.touchContainer]}
+            onPress={() => {
+              router.push("./AddTask");
+            }}
+          >
             <Text style={styles.buttonText}>Add Task</Text>
           </TouchableOpacity>
         </View>
@@ -29,7 +37,10 @@ const index = () => {
             source={require("../assets/images/pending.png")}
             style={styles.cardImage}
           />
-          <TouchableOpacity style={[styles.touchContainer]} onPress={()=>router.push('/pending')}>
+          <TouchableOpacity
+            style={[styles.touchContainer]}
+            onPress={() => router.push("/pending")}
+          >
             <Text style={styles.buttonText}>Show Pending Task</Text>
           </TouchableOpacity>
         </View>
@@ -41,11 +52,13 @@ const index = () => {
             source={require("../assets/images/complete.png")}
             style={styles.cardImage}
           />
-          <TouchableOpacity style={[styles.touchContainer]} onPress={()=>router.push("/CompletedTask")}>
+          <TouchableOpacity
+            style={[styles.touchContainer]}
+            onPress={() => router.push("/CompletedTask")}
+          >
             <Text style={styles.buttonText}>Show Completed Task</Text>
           </TouchableOpacity>
         </View>
-       
       </View>
     </View>
   );
@@ -53,8 +66,8 @@ const index = () => {
 
 const styles = StyleSheet.create({
   container: {
-    display:'flex',
-    alignItems:'center',
+    display: "flex",
+    alignItems: "center",
     backgroundColor: "#f0f0f0",
     padding: 10,
   },
